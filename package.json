@@ -1,0 +1,12 @@
+{
+  "name": "english-grammar-test",
+  "version": "1.0.0",
+  "description": "English Grammar Test with Telegram Reporting",
+  "scripts": {
+    "start": "vercel dev"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.x"
+  }
+}
