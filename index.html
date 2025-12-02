@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .timer {
+            background: #ef4444;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        .screen {
+            padding: 40px;
+            display: none;
+        }
+
+        #startScreen {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4f46e5;
+            font-size: 1.1rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4f46e5;
+            outline: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .question {
+            background: #f9fafb;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border-left: 5px solid #4f46e5;
+        }
+
+        .question-number {
+            color: #4f46e5;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: #4f46e5;
+            background: #f5f3ff;
+        }
+
+        .option input {
+            margin-right: 15px;
+            transform: scale(1.3);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .result-screen {
+            text-align: center;
+        }
+
+        .score {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #4f46e5;
+            margin: 20px 0;
+        }
+
+        .result-details {
+            background: #f9fafb;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4f46e5;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            width: 0%;
+            transition: width 1s;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 10px;
+            }
+            .header, .screen {
+                padding: 20px;
+            }
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .btn {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 English Grammar Test</h1>
+            <p>Test your grammar skills with this comprehensive test</p>
+        </div>
+
+        <div class="timer" id="timer">
+            Time Remaining: <span id="time">30:00</span>
+        </div>
+
+        <!-- Start Screen -->
+        <div class="screen" id="startScreen">
+            <div class="form-group">
+                <label for="name">Enter your name:</label>
+                <input type="text" id="name" placeholder="Your full name" required>
+            </div>
+            <button class="btn btn-start" onclick="startTest()">Start Test (30 minutes)</button>
+        </div>
+
+        <!-- Loading Screen -->
+        <div class="screen" id="loadingScreen">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Submitting your test...</p>
+            </div>
+        </div>
+
+        <!-- Test Screen -->
+        <div class="screen" id="testScreen">
+            <form id="testForm">
+                <!-- Questions will be inserted here -->
+            </form>
+            <div class="controls">
+                <button type="button" class="btn" onclick="goBack()">Back to Start</button>
+                <button type="button" class="btn btn-submit" onclick="submitTest()">Submit Test</button>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div class="screen result-screen" id="resultScreen">
+            <h2>🎯 Test Completed!</h2>
+            <div class="score" id="scoreDisplay">0/30</div>
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+            </div>
+            <div class="result-details" id="resultDetails">
+                <!-- Results will be displayed here -->
+            </div>
+            <button class="btn" onclick="location.reload()" style="margin-top: 30px;">Take Test Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const TEST_DURATION = 1800; // 30 minutes in seconds
+        let timeLeft = TEST_DURATION;
+        let timerInterval;
+        let candidateName = '';
+
+        // Test Questions
+        const questions = [
+            // Part 1: To Be, This/That/These/Those
+            { question: "She ______ a doctor.", options: ["am", "is", "are"], correct: "B", section: "To Be" },
+            { question: "______ are my friends over there.", options: ["This", "That", "Those"], correct: "C", section: "This/That/These/Those" },
+            { question: "Look at ______ bird in the tree!", options: ["this", "that", "these"], correct: "B", section: "This/That/These/Those" },
+            { question: "______ book here is very interesting.", options: ["These", "This", "Those"], correct: "B", section: "This/That/These/Those" },
+            { question: "We ______ from Italy.", options: ["is", "am", "are"], correct: "C", section: "To Be" },
+            
+            // Part 2: Can / Can't
+            { question: "______ you speak French?", options: ["Can", "Are", "Have"], correct: "A", section: "Can/Can't" },
+            { question: "I'm sorry, I ______ come to the party.", options: ["can", "can't", "can not"], correct: "B", section: "Can/Can't" },
+            { question: "He ______ play the guitar very well.", options: ["cans", "can", "is can"], correct: "B", section: "Can/Can't" },
+            
+            // Part 3: Have got / Has got
+            { question: "They ______ two cats and a dog.", options: ["has got", "have got", "are got"], correct: "B", section: "Have got/Has got" },
+            { question: "My sister ______ long blonde hair.", options: ["have got", "has got", "is got"], correct: "B", section: "Have got/Has got" },
+            { question: "______ you ______ any brothers?", options: ["Has/got", "Have/got", "Do/got"], correct: "B", section: "Have got/Has got" },
+            
+            // Part 4: Present Continuous
+            { question: "Listen! The baby ______.", options: ["cries", "is crying", "cry"], correct: "B", section: "Present Continuous" },
+            { question: "What ______ you ______ now?", options: ["are/doing", "do/doing", "are/do"], correct: "A", section: "Present Continuous" },
+            { question: "They ______ TV at the moment.", options: ["are watching", "watch", "watches"], correct: "A", section: "Present Continuous" },
+            { question: "I ______ to study.", options: ["am trying", "try", "tries"], correct: "A", section: "Present Continuous" },
+            
+            // Part 5: Present Simple
+            { question: "He ______ to work by bus.", options: ["go", "going", "goes"], correct: "C", section: "Present Simple" },
+            { question: "My parents ______ in a big house.", options: ["live", "lives", "are live"], correct: "A", section: "Present Simple" },
+            { question: "______ she like pizza?", options: ["Do", "Does", "Is"], correct: "B", section: "Present Simple" },
+            { question: "We usually ______ dinner at 7 PM.", options: ["have", "are having", "has"], correct: "A", section: "Present Simple" },
+            { question: "The sun ______ in the east.", options: ["rise", "rises", "is rising"], correct: "B", section: "Present Simple" },
+            
+            // Part 6: Prepositions of Place
+            { question: "The book is ______ the table.", options: ["on", "at", "of"], correct: "A", section: "Prepositions" },
+            { question: "The cat is hiding ______ the sofa.", options: ["between", "under", "next to"], correct: "B", section: "Prepositions" },
+            { question: "There is a picture ______ the wall.", options: ["in", "on", "at"], correct: "B", section: "Prepositions" },
+            { question: "She is standing ______ her brother.", options: ["beside", "between", "under"], correct: "B", section: "Prepositions" },
+            { question: "The bank is ______ the post office.", options: ["opposite", "next to", "between"], correct: "C", section: "Prepositions" },
+            
+            // Part 7: Mixed Grammar
+            { question: "______ children are my cousins.", options: ["This", "That", "Those"], correct: "C", section: "Mixed" },
+            { question: "______ you help me?", options: ["Have", "Can", "Are"], correct: "B", section: "Mixed" },
+            { question: "I ______ a headache.", options: ["have got", "has got", "am got"], correct: "A", section: "Mixed" },
+            { question: "He ______ a shower.", options: ["has", "is having", "have"], correct: "B", section: "Mixed" },
+            { question: "The keys aren't ______ my bag.", options: ["on", "at", "in"], correct: "C", section: "Mixed" }
+        ];
+
+        function startTest() {
+            const nameInput = document.getElementById('name');
+            if (!nameInput.value.trim()) {
+                alert('Please enter your name');
+                return;
+            }
+            
+            candidateName = nameInput.value.trim();
+            
+            // Show timer and test screen
+            document.getElementById('timer').style.display = 'block';
+            showScreen('testScreen');
+            
+            // Generate questions
+            generateQuestions();
+            
+            // Start timer
+            startTimer();
+        }
+
+        function showScreen(screenId) {
+            const screens = ['startScreen', 'loadingScreen', 'testScreen', 'resultScreen'];
+            screens.forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+            document.getElementById(screenId).style.display = 'block';
+        }
+
+        function startTimer() {
+            updateTimer();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimer();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitTest();
+                }
+            }, 1000);
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('time').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+            if (timeLeft <= 300) { // 5 minutes left
+                document.getElementById('timer').style.background = '#dc2626';
+            }
+        }
+
+        function generateQuestions() {
+            const form = document.getElementById('testForm');
+            form.innerHTML = '';
+            
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <div class="question-number">Question ${index + 1} (${q.section})</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        ${['A', 'B', 'C'].map((letter, i) => `
+                            <div class="option">
+                                <input type="radio" id="q${index}${letter}" name="q${index}" value="${letter}">
+                                <label for="q${index}${letter}">${letter}. ${q.options[i]}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                form.appendChild(questionDiv);
+            });
+        }
+
+        function goBack() {
+            if (confirm('Are you sure? Your progress will be lost.')) {
+                clearInterval(timerInterval);
+                timeLeft = TEST_DURATION;
+                document.getElementById('timer').style.display = 'none';
+                showScreen('startScreen');
+            }
+        }
+
+        async function submitTest() {
+            clearInterval(timerInterval);
+            
+            // Calculate score
+            let score = 0;
+            const timeUsed = TEST_DURATION - timeLeft;
+            const answers = [];
+            
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const userAnswer = selected ? selected.value : null;
+                const isCorrect = userAnswer === q.correct;
+                
+                if (isCorrect) score++;
+                
+                answers.push({
+                    question: q.question,
+                    userAnswer: userAnswer || 'Not answered',
+                    correctAnswer: q.correct,
+                    isCorrect: isCorrect,
+                    section: q.section
+                });
+            });
+            
+            // Show loading
+            showScreen('loadingScreen');
+            
+            try {
+                // Send to API
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: candidateName,
+                        score: score,
+                        total: questions.length,
+                        timeUsed: timeUsed,
+                        answers: answers
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showResults(score, questions.length, answers);
+                } else {
+                    throw new Error(result.error || 'Submission failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error submitting test. Please try again.');
+                showScreen('testScreen');
+            }
+        }
+
+        function showResults(score, total, answers) {
+            const percentage = Math.round((score / total) * 100);
+            
+            // Update display
+            document.getElementById('scoreDisplay').textContent = `${score}/${total} (${percentage}%)`;
+            setTimeout(() => {
+                document.getElementById('progressBar').style.width = `${percentage}%`;
+            }, 100);
+            
+            // Group by sections
+            const sections = {};
+            answers.forEach(answer => {
+                if (!sections[answer.section]) {
+                    sections[answer.section] = { correct: 0, total: 0 };
+                }
+                sections[answer.section].total++;
+                if (answer.isCorrect) sections[answer.section].correct++;
+            });
+            
+            // Build result details
+            let detailsHTML = '<h3>Detailed Results:</h3>';
+            
+            // Section-wise summary
+            detailsHTML += '<div style="margin: 20px 0;">';
+            for (const [section, data] of Object.entries(sections)) {
+                const sectionPercent = Math.round((data.correct / data.total) * 100);
+                detailsHTML += `
+                    <div style="margin-bottom: 10px;">
+                        <strong>${section}:</strong> ${data.correct}/${data.total} (${sectionPercent}%)
+                        <div style="height: 8px; background: #e5e7eb; border-radius: 4px; margin-top: 5px;">
+                            <div style="height: 100%; background: #10b981; width: ${sectionPercent}%; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            detailsHTML += '</div>';
+            
+            // Performance message
+            let message = '';
+            if (percentage >= 90) message = '🎉 Excellent work!';
+            else if (percentage >= 75) message = '👍 Very good!';
+            else if (percentage >= 60) message = '✅ Good job!';
+            else if (percentage >= 50) message = '📚 Keep practicing!';
+            else message = '📖 Review the material and try again.';
+            
+            detailsHTML += `<p style="color: #4f46e5; font-weight: bold; margin-top: 20px;">${message}</p>`;
+            
+            document.getElementById('resultDetails').innerHTML = detailsHTML;
+            showScreen('resultScreen');
+        }
+    </script>
+</body>
+</html>
